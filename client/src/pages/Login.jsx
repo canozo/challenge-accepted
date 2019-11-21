@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import {
   Form,
   FormGroup,
@@ -29,6 +30,7 @@ class Login extends Component {
       correoM: '',
       passwordM: '',
       mostrarModal: false,
+      redirectHome: false,
       alerta: {
         error: false,
         mostrar: false,
@@ -88,16 +90,29 @@ class Login extends Component {
   }
 
   render() {
-    const { correo, password, alerta, nombresM, correoM, passwordM, mostrarModal } = this.state;
+    const {
+      correo,
+      password,
+      alerta,
+      nombresM,
+      correoM,
+      passwordM,
+      mostrarModal,
+      redirectHome
+    } = this.state;
 
     const { login, register } = this.context;
+
+    if (redirectHome) {
+      return <Redirect to="/" />
+    }
 
     return (
       <div className="Login">
         <h3>Iniciar sesion</h3>
         <Form className="form">
           <FormGroup>
-            <Label for="correo">Usuario</Label>
+            <Label for="correo">Correo</Label>
             <Input
               value={correo}
               onChange={e => this.setState({ correo: e.target.value })}
@@ -128,11 +143,18 @@ class Login extends Component {
             Ingresar
           </Button>
           <Button
-            color="link"
+            color="info"
             block
             onClick={this.toggle}
           >
             Crear Cuenta
+          </Button>
+          <Button
+            color="link"
+            block
+            onClick={() => this.setState({ redirectHome: true })}
+          >
+            Volver
           </Button>
         </Form>
         <Modal
