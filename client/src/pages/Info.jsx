@@ -11,7 +11,7 @@ import {
 
 import { AuthContext } from '../context/Auth';
 
-class Principal extends Component {
+class Info extends Component {
   constructor(props) {
     super(props);
 
@@ -86,6 +86,6 @@ class Principal extends Component {
   }
 }
 
-Principal.contextType = AuthContext;
+Info.contextType = AuthContext;
 
-export default Principal;
+export default Info;

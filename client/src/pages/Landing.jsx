@@ -9,7 +9,7 @@ import {
 } from 'react-landing-page';
 import { AuthContext } from '../context/Auth';
 
-class Principal extends Component {
+class Landing extends Component {
   constructor(props) {
     super(props);
 
@@ -68,6 +68,6 @@ class Principal extends Component {
   }
 }
 
-Principal.contextType = AuthContext;
+Landing.contextType = AuthContext;
 
-export default Principal;
+export default Landing;

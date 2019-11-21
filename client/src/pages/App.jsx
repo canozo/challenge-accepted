@@ -6,7 +6,9 @@ import Toolbar from '../components/Toolbar';
 import { AuthedRoute } from '../routes';
 import { MenuProvider } from '../context/Menu';
 import { AuthContext } from '../context/Auth';
+import { Crear, Mios, Globales } from './authed';
 import NotFound from './NotFound';
+import Intro from './Intro';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,7 +17,7 @@ class App extends React.Component {
     this.state = {
       items: [],
     };
-    this.headerB = 'Bienvenido a Challenge Accepted!';
+
     this.items = [];
   }
 
@@ -54,10 +56,10 @@ class App extends React.Component {
           <Row>
             <Col>
             <Switch>
-              <AuthedRoute exact path={`${match.url}/`} component={() => <h1>{this.headerB}</h1>} />
-              <AuthedRoute path={`${match.url}/crear`} component={() => <h1>crear</h1>} />
-              <AuthedRoute path={`${match.url}/mios`} component={() => <h1>mios</h1>} />
-              <AuthedRoute path={`${match.url}/globales`} component={() => <h1>globales</h1>} />
+              <AuthedRoute exact path={`${match.url}/`} component={Intro} />
+              <AuthedRoute path={`${match.url}/crear`} component={Crear} />
+              <AuthedRoute path={`${match.url}/mios`} component={Mios} />
+              <AuthedRoute path={`${match.url}/globales`} component={Globales} />
               <Route render={() => <NotFound />} />
             </Switch>
             </Col>
