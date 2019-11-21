@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const pool = require('../util/pool');
+const regex = require('../util/regex');
 
 const auth = {};
 
@@ -76,6 +77,12 @@ auth.getUser = (req, res, next) => {
 
 auth.register = (req, res, next) => {
   const { nombres, correo, pass } = req.body;
+
+  // verificar correo valido:
+  if (!regex.email.test(correo)) {
+    res.json({ error: true, errores: { correo: 'Correo no valido!' } });
+    return;
+  }
 
   pool.query(
     'insert into usuarios (nombres, correo, pass) values (?, ?, SHA2(?, 256))',

@@ -36,6 +36,11 @@ class Login extends Component {
         mostrar: false,
         mensaje: '',
       },
+      alertaM: {
+        error: false,
+        mostrar: false,
+        mensaje: '',
+      },
     };
   }
 
@@ -70,10 +75,10 @@ class Login extends Component {
     register(nombres, email, password)
       .catch(() => {
         this.setState({
-          alerta: {
+          alertaM: {
             error: true,
             mostrar: true,
-            mensaje: 'Error al registrarse!',
+            mensaje: 'Error al registrarse! Asegurese que ingreso datos válidos (correo).',
           },
         });
       });
@@ -94,6 +99,7 @@ class Login extends Component {
       correo,
       password,
       alerta,
+      alertaM,
       nombresM,
       correoM,
       passwordM,
@@ -197,6 +203,11 @@ class Login extends Component {
                   id="passwordM"
                 />
               </FormGroup>
+              {!alertaM.mostrar ? null : (
+                <Alert color={alertaM.error ? 'danger' : 'success'}>
+                  {alertaM.mensaje}
+                </Alert>
+              )}
               <Button
                 color="info"
                 block
