@@ -62,6 +62,7 @@ auth.getUser = (req, res, next) => {
         console.error(error);
         res.json({ error: true });
       } else if (result.length !== 1) {
+        console.log('No se encontro al usuario...', correo);
         res.json({ error: true, errores: { usuario: 'Usuario no encontrado!' } });
       } else {
         // informacion que se guarda en el token
@@ -79,8 +80,11 @@ auth.getUser = (req, res, next) => {
 auth.register = (req, res, next) => {
   const { nombres, correo, pass } = req.body;
 
+  console.log('Registrando a...', req.body);
+
   // verificar correo valido:
   if (!regex.email.test(correo)) {
+    console.log('Correo', correo, 'no valido.');
     res.json({ error: true, errores: { correo: 'Correo no valido!' } });
     return;
   }
