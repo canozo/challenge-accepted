@@ -27,9 +27,9 @@ class Intro extends Component {
       Cell: val => `Lps. ${val.value}.00`,
     }, {
       Header: 'Opciones',
-      accesor: 'id_challenge',
+      accessor: 'id_challenge',
       maxWidth: 105,
-      Cell: val => this.getBotones(val.val)
+      Cell: val => this.getBotones(val.value)
     }];
 
     this.controller = new AbortController();
@@ -73,39 +73,27 @@ class Intro extends Component {
 
   aceptar(id) {
     const payload = { id };
+    requests.accept(this.controller.signal, payload)
+      .then(() => this.getChallengeData())
+      .catch(err => console.log(err));
   }
 
   rechazar(id) {
     const payload = { id };
+    requests.deny(this.controller.signal, payload)
+      .then(() => this.getChallengeData())
+      .catch(err => console.log(err));
   }
 
   render() {
     const { challenges } = this.state;
     const { user } = this.context;
 
-    const heading = (
-      <React.Fragment>
-          <span role="img" aria-label="party pop">🎉</span>
-            {' '}
-            Hola, {user.nombre.split(' ')[0]}!
-            {' '}
-          <span role="img" aria-label="party pop">🎉</span>
-      </React.Fragment>
-    );
-
-    const subheadcomp = (
-      <React.Fragment>
-        Bienvenido a Challenge Accepted!
-        <br />
-        Challenges Disponibles:
-      </React.Fragment>
-    );
-
     return (
       <React.Fragment>
         <Section
-          heading={heading}
-          subhead={subheadcomp}
+          heading={`🎉 Bienvenido a Challenge Accepted, ${user.nombre.split(' ')[0]}! 🎉`}
+          subhead="Challenges Disponibles:"
         />
         <ReactTable
           data={challenges}

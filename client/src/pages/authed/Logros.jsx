@@ -50,18 +50,10 @@ class Logros extends Component {
   render() {
     const { challenges } = this.state;
 
-    const headcomp = (
-      <React.Fragment>
-        Tus Logros!
-        {' '}
-        <span role="img" aria-label="clap">👏</span>
-      </React.Fragment>
-    );
-
     return (
       <React.Fragment>
         <Section
-          heading={headcomp}
+          heading="Tus Logros! 👏"
           subhead="Todos los challenges en los que has dejado tu marca!"
         />
         <ReactTable

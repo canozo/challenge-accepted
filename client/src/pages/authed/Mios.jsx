@@ -15,7 +15,7 @@ class Mios extends Component {
       Header: 'Aceptado por',
       accessor: 'retado',
       maxWidth: 150,
-      Cell: val => console.log(val.val),
+      Cell: val => console.log(val.value),
     }, {
       Header: 'Descripción',
       accessor: 'descripcion',
@@ -51,18 +51,10 @@ class Mios extends Component {
   render() {
     const { challenges } = this.state;
 
-    const headcomp = (
-      <React.Fragment>
-        Tus Challenges!
-        {' '}
-        <span role="img" aria-label="cool">😎</span>
-      </React.Fragment>
-    );
-
     return (
       <React.Fragment>
         <Section
-          heading={headcomp}
+          heading="Tus Challenges! 😎"
           subhead="Todos los challenges que has patrocinado!"
         />
         <ReactTable

@@ -48,12 +48,15 @@ controller.getAvailable = (req, res) => {
   const { user } = req.data;
   pool.query(
     `select
-    id_challenge, b.nombres as retador, titulo, descripcion, recompensa
+    a.id_challenge as id_challenge, b.nombres as retador, titulo, descripcion, recompensa
     from challenges a
     inner join usuarios b
     on a.id_usuario = b.id_usuario
+    left join rechazados c
+    on a.id_challenge = c.id_challenge
     where a.id_usuario_taken is null
-    and a.id_usuario != ?`,
+    and a.id_usuario != ?
+    and c.id_usuario is null`,
     [user.id],
     (error, result) => {
       if (error) {
