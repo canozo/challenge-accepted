@@ -59,6 +59,7 @@ auth.getUser = (req, res, next) => {
     [correo.trim(), pass],
     (error, result) => {
       if (error) {
+        console.error(error);
         res.json({ error: true });
       } else if (result.length !== 1) {
         res.json({ error: true, errores: { usuario: 'Usuario no encontrado!' } });
@@ -89,6 +90,7 @@ auth.register = (req, res, next) => {
     [nombres, correo, pass],
     (error, result) => {
       if (error) {
+        console.error(error);
         res.json({ error: true });
       } else {
         req.user = correo;
