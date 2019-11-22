@@ -9,7 +9,6 @@ if (process.env.HEROKU) {
     user: process.env.CLEARDB_USER,
     password: process.env.CLEARDB_PASSWORD,
     database: process.env.CLEARDB_DATABASE,
-    multipleStatements: true,
     connectionLimit: 5,
   };
 } else {
@@ -18,7 +17,6 @@ if (process.env.HEROKU) {
     user: 'admin_ca',
     password: 'Moc5vynsOJ8f8SR',
     database: 'challenge_accepted',
-    multipleStatements: true,
   };
 }
 
