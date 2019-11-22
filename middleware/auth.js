@@ -80,7 +80,7 @@ auth.getUser = (req, res, next) => {
 auth.register = (req, res, next) => {
   const { nombres, correo, pass } = req.body;
 
-  console.log('Registrando a...', req.body);
+  console.log('Registrando a...', nombre, correo);
 
   // verificar correo valido:
   if (!regex.email.test(correo)) {
