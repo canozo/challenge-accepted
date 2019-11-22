@@ -61,7 +61,6 @@ class Login extends Component {
   submit(login, correo, password) {
     login(correo.trim(), password)
       .catch(err => {
-        console.error(err);
         this.setState({
           alerta: {
             error: true,
@@ -75,7 +74,6 @@ class Login extends Component {
   registrarme(register, nombres, email, password) {
     register(nombres, email, password)
       .catch(err => {
-        console.error(err);
         this.setState({
           alertaM: {
             error: true,
