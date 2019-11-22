@@ -7,6 +7,7 @@ const logger = require('morgan');
 const http = require('http');
 
 const authRouter = require('./api/auth');
+const challengesRouter = require('./api/challenges');
 
 const app = express();
 const server = http.createServer(app);
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRouter);
+app.use('/api/challenges', challengesRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));

@@ -27,6 +27,8 @@ class Intro extends Component {
       redirectApp,
     } = this.state;
 
+    const { user } = this.context;
+
     if (redirectHome) {
       return <Redirect to="/" />
     }
@@ -37,8 +39,8 @@ class Intro extends Component {
 
     return (
       <Section
-        heading="Bienvenido a Challenge Accepted! 🎉"
-        subhead="Revisa el menu superior para continuar"
+        heading={`Hola, ${user.nombre.split(' ')[0]}!`}
+        subhead="Bienvenido a Challenge Accepted! 🎉"
       />
     );
   }

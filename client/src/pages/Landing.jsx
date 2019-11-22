@@ -48,7 +48,7 @@ class Landing extends Component {
         bgOpacity={0.5}
       >
         <Heading>Challenge Accepted</Heading>
-        <Subhead fontSize={[2, 3]}>Haz un buen por tu comunidad desde tu casa.</Subhead>
+        <Subhead fontSize={[2, 3]}>Haz un bien por tu comunidad desde tu casa.</Subhead>
         <Flex mt={3}>
           <CallToAction
             onClick={() => this.setState({ redirectInfo: true })}

@@ -12,11 +12,14 @@ import {
   ModalBody,
   ModalFooter,
 } from 'reactstrap';
+import { AuthContext } from '../../context/Auth';
+import requests from '../../requests/challenges';
 
 class Crear extends Component {
   constructor(props) {
     super(props);
 
+    this.controller = new AbortController();
     this.toggle = this.toggle.bind(this);
     this.submit = this.submit.bind(this);
 
@@ -39,12 +42,25 @@ class Crear extends Component {
   }
 
   submit() {
-    const {
+    const { titulo, descripcion, recompensa } = this.state;
+    const { user } = this.context;
+
+    const payload = {
+      id: user.id,
       titulo,
       descripcion,
       recompensa,
-    } = this.state;
-    console.log({ titulo, descripcion, recompensa });
+    };
+
+    requests.create(this.controller.signal, payload)
+      .then(() => this.setState({
+        titulo: '',
+        descripcion: '',
+        recompensa: 0,
+        modal: true,
+        error: false,
+      }))
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -60,13 +76,13 @@ class Crear extends Component {
       <React.Fragment>
         <Section
           heading="Crear Challenges 🤔"
-          subhead="Se creativo, y piensa bien en la recompensa de tus challenges!"
+          subhead="Se creativo, y piensa en retos interesantes!"
         />
         <Form>
           <FormGroup>
             <Label for="titulo">Titulo</Label>
             <Input
-              type="textarea"
+              type="text"
               name="titulo"
               id="titulo"
               value={titulo}
@@ -97,12 +113,12 @@ class Crear extends Component {
               onChange={e => this.setState({ recompensa: e.target.value })}
             >
               <option value={0}>Selecciona una</option>
-              <option value={1}>Lps. 100.00</option>
-              <option value={2}>Lps. 200.00</option>
-              <option value={3}>Lps. 500.00</option>
-              <option value={4}>Lps. 750.00</option>
-              <option value={5}>Lps. 1,000.00</option>
-              <option value={6}>Lps. 2,000.00</option>
+              <option value={100}>Lps. 100.00</option>
+              <option value={200}>Lps. 200.00</option>
+              <option value={500}>Lps. 500.00</option>
+              <option value={750}>Lps. 750.00</option>
+              <option value={1000}>Lps. 1,000.00</option>
+              <option value={2000}>Lps. 2,000.00</option>
             </Input>
             <FormText color="muted">
               La recompensa de tu challenge. Nadie quiere trabajar de gratis, piensala bien!
@@ -129,5 +145,7 @@ class Crear extends Component {
     )
   }
 }
+
+Crear.contextType = AuthContext;
 
 export default Crear;
