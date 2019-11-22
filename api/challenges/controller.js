@@ -3,11 +3,12 @@ const pool = require('../../util/pool');
 const controller = {};
 
 controller.create = (req, res) => {
-  const { id, titulo, descripcion, recompensa } = req.body;
+  const { user } = req.data;
+  const { titulo, descripcion, recompensa } = req.body;
   pool.query(
     `insert into challenges (id_usuario, titulo, descripcion, recompensa) values
     (?, ?, ?, ?)`,
-    [id, titulo, descripcion, recompensa],
+    [user.id, titulo, descripcion, recompensa],
     (error) => {
       if (error) {
         console.log(error);
@@ -43,14 +44,17 @@ controller.getAll = (req, res) => {
 
 controller.getAvailable = (req, res) => {
   // obtener todos los challenges que esten disponibles
+  // (no hechos por el mismo usuario, ni rechazados por el mismo)
+  const { user } = req.data;
   pool.query(
     `select
     id_challenge, b.nombres as retador, titulo, descripcion, recompensa
     from challenges a
     inner join usuarios b
     on a.id_usuario = b.id_usuario
-    where a.id_usuario_taken is null`,
-    [],
+    where a.id_usuario_taken is null
+    and a.id_usuario != ?`,
+    [user.id],
     (error, result) => {
       if (error) {
         console.log(error);
@@ -64,15 +68,17 @@ controller.getAvailable = (req, res) => {
 
 controller.getBy = (req, res) => {
   // obtener todos los challenges hechos por una persona
-  const { id } = req.params;
+  const { user } = req.data;
   pool.query(
     `select
-    id_challenge, b.nombres as retador, titulo, descripcion, recompensa
+    id_challenge, b.nombres as retador, c.nombres as retado, titulo, descripcion, recompensa
     from challenges a
     inner join usuarios b
     on a.id_usuario = b.id_usuario
+    left join usuarios c
+    on a.id_usuario_taken = c.id_usuario
     where a.id_usuario = ?`,
-    [id],
+    [user.id],
     (error, result) => {
       if (error) {
         console.log(error);
@@ -86,7 +92,7 @@ controller.getBy = (req, res) => {
 
 controller.getTakenBy = (req, res) => {
   // obtener todos los challenges que una persona ha ocupado
-  const { id } = req.params;
+  const { user } = req.data;
   pool.query(
     `select
     id_challenge, b.nombres as retador, titulo, descripcion, recompensa
@@ -96,13 +102,52 @@ controller.getTakenBy = (req, res) => {
     inner join usuarios c
     on a.id_usuario_taken = c.id_usuario
     where c.id_usuario = ?`,
-    [id],
+    [user.id],
     (error, result) => {
       if (error) {
         console.log(error);
         res.json({ error: true });
       } else {
         res.json(result);
+      }
+    }
+  );
+};
+
+controller.accept = (req, res) => {
+  // aceptar un challenge
+  const { id } = req.body;
+  const { user } = req.data;
+  pool.query(
+    `update challenges
+    set id_usuario_taken = ?
+    where id_challenge = ?`,
+    [user.id, id],
+    (error) => {
+      if (error) {
+        console.log(error);
+        res.json({ error: true });
+      } else {
+        res.json({ error: false });
+      }
+    }
+  );
+};
+
+controller.deny = (req, res) => {
+  // rechazar un challenge
+  const { id } = req.body;
+  const { user } = req.data;
+  pool.query(
+    `insert into rechazados (id_usuario, id_challenge) values
+    (?, ?)`,
+    [user.id, id],
+    (error) => {
+      if (error) {
+        console.log(error);
+        res.json({ error: true });
+      } else {
+        res.json({ error: false });
       }
     }
   );

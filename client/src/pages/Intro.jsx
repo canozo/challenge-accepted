@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Section } from 'react-landing-page';
 import ReactTable from 'react-table';
+import { Button } from 'reactstrap';
 import { AuthContext } from '../context/Auth';
 import requests from '../requests/challenges';
 
@@ -22,12 +23,20 @@ class Intro extends Component {
     }, {
       Header: 'Recompensa',
       accessor: 'recompensa',
-      Cell: val => `Lps. ${val.value}.00`,
       maxWidth: 120,
+      Cell: val => `Lps. ${val.value}.00`,
+    }, {
+      Header: 'Opciones',
+      accesor: 'id_challenge',
+      maxWidth: 105,
+      Cell: val => this.getBotones(val.val)
     }];
 
     this.controller = new AbortController();
     this.getChallengeData = this.getChallengeData.bind(this);
+    this.getBotones = this.getBotones.bind(this);
+    this.aceptar = this.aceptar.bind(this);
+    this.rechazar = this.rechazar.bind(this);
 
     this.state = {
       challenges: [],
@@ -48,9 +57,41 @@ class Intro extends Component {
       .catch(err => console.log(err));
   }
 
+  getBotones(id) {
+    return (
+      <React.Fragment>
+        <Button color="success" onClick={() => this.aceptar(id)}>
+          <span role="img" aria-label="thumbs up">👍</span>
+        </Button>
+        {' '}
+        <Button color="danger" onClick={() => this.rechazar(id)}>
+        <span role="img" aria-label="thumbs down">👎</span>
+        </Button>
+      </React.Fragment>
+    );
+  }
+
+  aceptar(id) {
+    const payload = { id };
+  }
+
+  rechazar(id) {
+    const payload = { id };
+  }
+
   render() {
     const { challenges } = this.state;
     const { user } = this.context;
+
+    const heading = (
+      <React.Fragment>
+          <span role="img" aria-label="party pop">🎉</span>
+            {' '}
+            Hola, {user.nombre.split(' ')[0]}!
+            {' '}
+          <span role="img" aria-label="party pop">🎉</span>
+      </React.Fragment>
+    );
 
     const subheadcomp = (
       <React.Fragment>
@@ -63,13 +104,12 @@ class Intro extends Component {
     return (
       <React.Fragment>
         <Section
-          heading={`Hola, ${user.nombre.split(' ')[0]}! 🎉`}
+          heading={heading}
           subhead={subheadcomp}
         />
         <ReactTable
           data={challenges}
           columns={this.columnas}
-          filterable
         />
       </React.Fragment>
     );

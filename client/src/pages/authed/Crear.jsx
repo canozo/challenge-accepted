@@ -72,10 +72,18 @@ class Crear extends Component {
       error,
     } = this.state;
 
+    const headcomp = (
+      <React.Fragment>
+          Crear Challenges
+          {' '}
+          <span role="img" aria-label="thinking">🤔</span>
+      </React.Fragment>
+    );
+
     return (
       <React.Fragment>
         <Section
-          heading="Crear Challenges 🤔"
+          heading={headcomp}
           subhead="Se creativo, y piensa en retos interesantes!"
         />
         <Form>

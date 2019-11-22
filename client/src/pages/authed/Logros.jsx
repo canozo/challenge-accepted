@@ -3,7 +3,7 @@ import { Section } from 'react-landing-page';
 import ReactTable from 'react-table';
 import requests from '../../requests/challenges';
 
-class Mios extends Component {
+class Logros extends Component {
   constructor(props) {
     super(props);
 
@@ -12,18 +12,17 @@ class Mios extends Component {
       accessor: 'titulo',
       maxWidth: 200,
     }, {
-      Header: 'Aceptado por',
-      accessor: 'retado',
+      Header: 'Retador',
+      accessor: 'retador',
       maxWidth: 150,
-      Cell: val => console.log(val.val),
     }, {
       Header: 'Descripción',
       accessor: 'descripcion',
     }, {
       Header: 'Recompensa',
       accessor: 'recompensa',
-      maxWidth: 120,
       Cell: val => `Lps. ${val.value}.00`,
+      maxWidth: 120,
     }];
 
     this.controller = new AbortController();
@@ -43,7 +42,7 @@ class Mios extends Component {
   }
 
   getChallengeData() {
-    requests.getBy()
+    requests.getTakenBy()
       .then(res => this.setState({ challenges: res }))
       .catch(err => console.log(err));
   }
@@ -53,9 +52,9 @@ class Mios extends Component {
 
     const headcomp = (
       <React.Fragment>
-        Tus Challenges!
+        Tus Logros!
         {' '}
-        <span role="img" aria-label="cool">😎</span>
+        <span role="img" aria-label="clap">👏</span>
       </React.Fragment>
     );
 
@@ -63,7 +62,7 @@ class Mios extends Component {
       <React.Fragment>
         <Section
           heading={headcomp}
-          subhead="Todos los challenges que has patrocinado!"
+          subhead="Todos los challenges en los que has dejado tu marca!"
         />
         <ReactTable
           data={challenges}
@@ -75,4 +74,4 @@ class Mios extends Component {
   }
 }
 
-export default Mios;
+export default Logros;

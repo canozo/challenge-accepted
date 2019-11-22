@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `challenges` (
     ON UPDATE NO ACTION)
 ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Challenges';
 
--- Challenges aceptados o rechazados
+-- Challenges rechazados
 CREATE TABLE IF NOT EXISTS `rechazados` (
   `id_challenge` INT NOT NULL,
   `id_usuario` INT NOT NULL,
