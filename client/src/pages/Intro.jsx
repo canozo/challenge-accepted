@@ -1,47 +1,77 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Section } from 'react-landing-page';
-
+import ReactTable from 'react-table';
 import { AuthContext } from '../context/Auth';
+import requests from '../requests/challenges';
 
 class Intro extends Component {
   constructor(props) {
     super(props);
 
+    this.columnas = [{
+      Header: 'Challenge',
+      accessor: 'titulo',
+      maxWidth: 200,
+    }, {
+      Header: 'Retador',
+      accessor: 'retador',
+      maxWidth: 150,
+    }, {
+      Header: 'Descripción',
+      accessor: 'descripcion',
+    }, {
+      Header: 'Recompensa',
+      accessor: 'recompensa',
+      Cell: val => `Lps. ${val.value}.00`,
+      maxWidth: 120,
+    }];
+
     this.controller = new AbortController();
+    this.getChallengeData = this.getChallengeData.bind(this);
 
     this.state = {
-      redirectHome: false,
-      redirectApp: false,
+      challenges: [],
     };
   }
 
+  componentDidMount() {
+    this.getChallengeData();
+  }
 
   componentWillUnmount() {
     this.controller.abort();
   }
 
-  render() {
-    const {
-      redirectHome,
-      redirectApp,
-    } = this.state;
+  getChallengeData() {
+    requests.getAvailable()
+      .then(res => this.setState({ challenges: res }))
+      .catch(err => console.log(err));
+  }
 
+  render() {
+    const { challenges } = this.state;
     const { user } = this.context;
 
-    if (redirectHome) {
-      return <Redirect to="/" />
-    }
-
-    if (redirectApp) {
-      return <Redirect to="/app" />
-    }
+    const subheadcomp = (
+      <React.Fragment>
+        Bienvenido a Challenge Accepted!
+        <br />
+        Challenges Disponibles:
+      </React.Fragment>
+    );
 
     return (
-      <Section
-        heading={`Hola, ${user.nombre.split(' ')[0]}!`}
-        subhead="Bienvenido a Challenge Accepted! 🎉"
-      />
+      <React.Fragment>
+        <Section
+          heading={`Hola, ${user.nombre.split(' ')[0]}! 🎉`}
+          subhead={subheadcomp}
+        />
+        <ReactTable
+          data={challenges}
+          columns={this.columnas}
+          filterable
+        />
+      </React.Fragment>
     );
   }
 }
