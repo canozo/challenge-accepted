@@ -6,7 +6,7 @@ import Toolbar from '../components/Toolbar';
 import { AuthedRoute } from '../routes';
 import { MenuProvider } from '../context/Menu';
 import { AuthContext } from '../context/Auth';
-import { Crear, Mios, Globales, Logros } from './authed';
+import { Crear, Mios, Logros } from './authed';
 import NotFound from './NotFound';
 import Intro from './Intro';
 
@@ -60,7 +60,6 @@ class App extends React.Component {
               <AuthedRoute path={`${match.url}/crear`} component={Crear} />
               <AuthedRoute path={`${match.url}/mios`} component={Mios} />
               <AuthedRoute path={`${match.url}/logros`} component={Logros} />
-              <AuthedRoute path={`${match.url}/globales`} component={Globales} />
               <Route render={() => <NotFound />} />
             </Switch>
             </Col>

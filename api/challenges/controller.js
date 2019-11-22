@@ -5,6 +5,12 @@ const controller = {};
 controller.create = (req, res) => {
   const { user } = req.data;
   const { titulo, descripcion, recompensa } = req.body;
+
+  if (recompensa === 0 || recompensa === '0') {
+    res.json({ error: true });
+    return;
+  }
+
   pool.query(
     `insert into challenges (id_usuario, titulo, descripcion, recompensa) values
     (?, ?, ?, ?)`,

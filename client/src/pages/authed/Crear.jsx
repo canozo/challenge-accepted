@@ -60,7 +60,13 @@ class Crear extends Component {
         modal: true,
         error: false,
       }))
-      .catch(err => console.log(err));
+      .catch(() => this.setState({
+        titulo: '',
+        descripcion: '',
+        recompensa: 0,
+        modal: true,
+        error: true,
+      }));
   }
 
   render() {
@@ -71,6 +77,15 @@ class Crear extends Component {
       modal,
       error,
     } = this.state;
+
+    const compError = (
+      <React.Fragment>
+        Error al agregar el challenge!
+        <br />
+        <br />
+        Revise que lleno todos los campos.
+      </React.Fragment>
+    );
 
     return (
       <React.Fragment>
@@ -135,7 +150,7 @@ class Crear extends Component {
         <Modal isOpen={modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Aviso</ModalHeader>
           <ModalBody>
-            {error ? 'Error al agregar el challenge!' : 'Challenge agregado con exito!'}
+            {error ? compError : 'Challenge agregado con exito!'}
           </ModalBody>
           <ModalFooter>
             <Button block color="primary" onClick={this.toggle}>Ok</Button>

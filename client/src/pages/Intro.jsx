@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { Section } from 'react-landing-page';
-import ReactTable from 'react-table';
-import { Button } from 'reactstrap';
+import {
+  Button,
+  Row,
+  Col,
+  Card,
+  CardText,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  CardSubtitle,
+} from 'reactstrap';
 import { AuthContext } from '../context/Auth';
 import requests from '../requests/challenges';
 
@@ -9,32 +18,8 @@ class Intro extends Component {
   constructor(props) {
     super(props);
 
-    this.columnas = [{
-      Header: 'Challenge',
-      accessor: 'titulo',
-      maxWidth: 200,
-    }, {
-      Header: 'Retador',
-      accessor: 'retador',
-      maxWidth: 150,
-    }, {
-      Header: 'Descripción',
-      accessor: 'descripcion',
-    }, {
-      Header: 'Recompensa',
-      accessor: 'recompensa',
-      maxWidth: 120,
-      Cell: val => `Lps. ${val.value}.00`,
-    }, {
-      Header: 'Opciones',
-      accessor: 'id_challenge',
-      maxWidth: 105,
-      Cell: val => this.getBotones(val.value)
-    }];
-
     this.controller = new AbortController();
     this.getChallengeData = this.getChallengeData.bind(this);
-    this.getBotones = this.getBotones.bind(this);
     this.aceptar = this.aceptar.bind(this);
     this.rechazar = this.rechazar.bind(this);
 
@@ -57,20 +42,6 @@ class Intro extends Component {
       .catch(err => console.log(err));
   }
 
-  getBotones(id) {
-    return (
-      <React.Fragment>
-        <Button color="success" onClick={() => this.aceptar(id)}>
-          <span role="img" aria-label="thumbs up">👍</span>
-        </Button>
-        {' '}
-        <Button color="danger" onClick={() => this.rechazar(id)}>
-        <span role="img" aria-label="thumbs down">👎</span>
-        </Button>
-      </React.Fragment>
-    );
-  }
-
   aceptar(id) {
     const payload = { id };
     requests.accept(this.controller.signal, payload)
@@ -89,16 +60,46 @@ class Intro extends Component {
     const { challenges } = this.state;
     const { user } = this.context;
 
+    if (challenges.length === 0) {
+      return (
+        <React.Fragment>
+        <Section
+          heading={`🎉 Bienvenido a Challenge Accepted, ${user.nombre.split(' ')[0]}! 🎉`}
+          subhead="No hay Challenges Disponibles! Sé el primero en crear uno!"
+        />
+      </React.Fragment>
+      );
+    }
+
     return (
       <React.Fragment>
         <Section
           heading={`🎉 Bienvenido a Challenge Accepted, ${user.nombre.split(' ')[0]}! 🎉`}
           subhead="Challenges Disponibles:"
         />
-        <ReactTable
-          data={challenges}
-          columns={this.columnas}
-        />
+        <Row>
+          {challenges.map(challenge => (
+            <Col key={challenge.id_challenge} sm="4" className="py-3">
+              <Card>
+                <CardHeader tag="h4" className="text-center">{challenge.titulo}</CardHeader>
+                <CardBody>
+                  <CardSubtitle>{challenge.descripcion}</CardSubtitle>
+                  <CardText><b>{`Lps. ${challenge.recompensa}.00`}</b></CardText>
+                  <div className="text-center">
+                    <Button color="success" onClick={() => this.aceptar(challenge.id_challenge)}>
+                      <span role="img" aria-label="thumbs up">👍</span>
+                    </Button>
+                    {' '}
+                    <Button color="danger" onClick={() => this.rechazar(challenge.id_challenge)}>
+                      <span role="img" aria-label="thumbs down">👎</span>
+                    </Button>
+                  </div>
+                </CardBody>
+                <CardFooter className="text-muted">Propuesto por: {challenge.retador}</CardFooter>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </React.Fragment>
     );
   }

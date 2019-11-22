@@ -56,7 +56,7 @@ auth.getUser = (req, res, next) => {
     `select id_usuario, nombres, correo, pass
     from usuarios
     where correo = ? and pass = SHA2(?, 256)`,
-    [correo.trim(), pass],
+    [correo.trim().toLowerCase(), pass],
     (error, result) => {
       if (error) {
         console.error(error);
@@ -87,13 +87,13 @@ auth.register = (req, res, next) => {
 
   pool.query(
     'insert into usuarios (nombres, correo, pass) values (?, ?, SHA2(?, 256))',
-    [nombres, correo, pass],
+    [nombres, correo.trim().toLowerCase(), pass],
     (error, result) => {
       if (error) {
         console.error(error);
         res.json({ error: true });
       } else {
-        req.user = correo;
+        req.user = correo.trim().toLowerCase();
         req.password = pass;
         next();
       }
