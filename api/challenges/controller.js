@@ -74,7 +74,7 @@ controller.getBy = (req, res) => {
   const { user } = req.data;
   pool.query(
     `select
-    id_challenge, b.nombres as retador, c.nombres as retado, titulo, descripcion, recompensa
+    id_challenge, c.nombres as retado, c.correo as correo, titulo, descripcion, recompensa
     from challenges a
     inner join usuarios b
     on a.id_usuario = b.id_usuario
@@ -98,7 +98,7 @@ controller.getTakenBy = (req, res) => {
   const { user } = req.data;
   pool.query(
     `select
-    id_challenge, b.nombres as retador, titulo, descripcion, recompensa
+    id_challenge, b.nombres as retador, b.correo as correo, titulo, descripcion, recompensa
     from challenges a
     inner join usuarios b
     on a.id_usuario = b.id_usuario

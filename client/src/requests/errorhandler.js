@@ -1,7 +1,5 @@
 export default function errorHandler(res) {
   if (res.error) {
-    console.error('Response recibida:', res);
-    console.error('Errores:', res.error);
     if (res.errToken) {
       const error = { tipo: 'token' };
       throw error;
